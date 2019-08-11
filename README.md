@@ -7,5 +7,5 @@ Reads CSV files stored S3 folder in a bucket one by one and process them (Like c
 * Summary file: s3://bucket-name/folder-path/summary.txt
 ## Rest API
 This is for triggering and getting status of the jobs once the application is started.
-* Triggering: http://localhost:8080/start?numRecordsInBatch=10&s3Folder=<Url Encoded S3 folder path in format s3://bucket-name/folder-path>
+* Triggering: http://localhost:8080/start?numRecordsInBatch=10&s3Folder=<Url Encoded S3 folder path in format s3://bucket-name/folder-path> (The folder containing requests folder)
 * Status: http://localhost:8080/status?numRecordsInBatch=10&s3Folder=<Url Encoded S3 folder path in format s3://bucket-name/folder-path> (should be called with same parameters used for triggering the job)

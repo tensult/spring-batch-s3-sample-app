@@ -1,4 +1,4 @@
-package com.tensult.spring.batch;
+package com.tensult;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.item.ParseException;
@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableBatchProcessing
-public class S3ObjectsBatchApplication {
+public class BatchdemoApplication {
 
 	public static void main(String[] args) throws UnexpectedInputException, ParseException, Exception {
-		SpringApplication.run(S3ObjectsBatchApplication.class, args);
+		SpringApplication.run(BatchdemoApplication.class, args);
 	}
 }

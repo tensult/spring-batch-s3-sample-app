@@ -1,4 +1,4 @@
-package com.tensult.spring.batch.utils;
+package com.tensult.utils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

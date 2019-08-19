@@ -1,4 +1,4 @@
-package com.tensult.spring.batch;
+package com.tensult.batch.listeners;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.core.ExitStatus;
@@ -13,8 +13,7 @@ public class RequestsStepListener implements StepExecutionListener {
 		ExecutionContext jobContext = stepExecution.getJobExecution().getExecutionContext();
 		String s3Folder = stepExecution.getJobParameters().getString("s3Folder");
 		String reqestsS3Folder = StringUtils.removeEnd(s3Folder, "/") + "/requests";
-		jobContext.put("s3Folder", reqestsS3Folder);
-		
+		jobContext.put("s3Folder", reqestsS3Folder);	
 	}
 
 	@Override

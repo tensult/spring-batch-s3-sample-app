@@ -1,4 +1,4 @@
-package com.tensult.spring.batch.configs;
+package com.tensult.configs;
 
 
 import java.io.IOException;
@@ -13,29 +13,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSCredentialsProviderChain;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.tensult.spring.batch.RequestsProcessor;
-import com.tensult.spring.batch.RequestsStepListener;
-import com.tensult.spring.batch.ResponsesProcessor;
-import com.tensult.spring.batch.ResponsesStepListener;
-import com.tensult.spring.batch.ResponsesWriter;
-import com.tensult.spring.batch.S3CSVObjectsReader;
-import com.tensult.spring.batch.SummaryWriter;
-import com.tensult.spring.batch.types.BatchRequest;
+import com.tensult.batch.listeners.RequestsStepListener;
+import com.tensult.batch.listeners.ResponsesStepListener;
+import com.tensult.batch.processors.RequestsProcessor;
+import com.tensult.batch.processors.ResponsesProcessor;
+import com.tensult.batch.readers.S3CSVObjectsReader;
+import com.tensult.batch.writters.ResponsesWriter;
+import com.tensult.batch.writters.SummaryWriter;
+import com.tensult.types.BatchRequest;
+import com.tensult.types.SummaryReport;
 
-/**
- * Batch job Spring beans configuration
- * @author Dilip <dev@tensult.com>
- */
 @Configuration
 @EnableAsync
 @EnableBatchProcessing
-@PropertySource("classpath:application.properties")
 public class BatchConfiguration {
 
     @Autowired
@@ -48,6 +43,7 @@ public class BatchConfiguration {
     @Autowired
     private ApplicationContext appContext;
 
+    @Autowired
     public S3CSVObjectsReader reader() throws IOException {
     	return appContext.getBean(S3CSVObjectsReader.class);
     }
@@ -111,7 +107,7 @@ public class BatchConfiguration {
     @Bean
     public Step generateSummary() throws IOException {
         return stepBuilderFactory.get("generateSummary")
-        		.<BatchRequest, BatchRequest> chunk(1)
+        		.<BatchRequest, SummaryReport> chunk(1)
             .reader(reader())
             .processor(responseProcessor())
             .writer(summaryWriter())

@@ -1,7 +1,8 @@
-package com.tensult.spring.batch;
+package com.tensult.batch.controllers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -18,10 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-/**
- * Rest API for managing the batch jobs
- * @author Dilip <dev@tensult.com> 
- */
+
+import com.tensult.types.APIResponse;
+
 @RestController
 public class BatchJobController {
 
@@ -42,7 +42,7 @@ public class BatchJobController {
 	Job job;
 
 	@RequestMapping(value = "/start", params = { "s3Folder", "numRecordsInBatch" }, method = RequestMethod.GET)
-	public String startJob(@RequestParam("s3Folder") String s3Folder,
+	public String handle(@RequestParam("s3Folder") String s3Folder,
 			@RequestParam("numRecordsInBatch") String numRecordsInBatch) throws Exception {
 		Map<String, JobParameter> jobParams = new LinkedHashMap<String, JobParameter>();
 		jobParams.put("s3Folder", new JobParameter(s3Folder));
@@ -60,5 +60,20 @@ public class BatchJobController {
 		jobParams.put("numRecordsInBatch", new JobParameter(numRecordsInBatch));
 		JobExecution jobExecution = jobRepository.getLastJobExecution(job.getName(), new JobParameters(jobParams));
 		return jobExecution != null ? jobExecution.getExitStatus().getExitCode() : ExitStatus.UNKNOWN.getExitCode();
+
+	}
+	
+	@RequestMapping(value = "/api", method = RequestMethod.POST)
+	public APIResponse postAPI() throws Exception {
+		Random random = new Random();
+		APIResponse response = new APIResponse();
+		if(random.nextInt(10) > 7) {
+			response.setStatus("failed");
+			response.setMessage("Error"+random.nextInt(10));
+		} else {
+			response.setStatus("success");
+			response.setMessage("ok");
+		}
+		return response;
 	}
 }
